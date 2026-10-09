@@ -5,53 +5,332 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>La Situazione | Lo Sbando - Centro Situazionale</title>
 <meta name="description" content="La Situazione, associazione culturale di Torino. Gestisce Lo Sbando - Centro Situazionale, nel quartiere San Donato.">
+<meta name="theme-color" content="#12223a">
+<link rel="icon" href="data:,">
+<link rel="preload" href="fonts/bebas-neue-latin-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/fraunces-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-  body { margin: 0; padding: 2rem 1.25rem 4rem; background: #1f3a5f; color: #f3e9d2; font: 18px/1.6 Georgia, "Times New Roman", serif; }
-  main { max-width: 36rem; margin: 0 auto; }
-  h1, h2 { font-family: "Bebas Neue", Impact, "Arial Narrow", sans-serif; font-weight: 400; letter-spacing: .04em; text-transform: uppercase; }
-  h1 { font-size: 3rem; margin: 0 0 .25rem; line-height: 1; }
-  h3 { font-size: 1.15rem; margin: 1.5rem 0 .25rem; }
-  h2 { font-size: 1.4rem; margin: 2.5rem 0 .5rem; }
-  p, ul { margin: 0 0 1rem; }
-  ul { padding-left: 1.2rem; }
-  a { color: inherit; }
-  footer { margin-top: 3rem; font-size: .85rem; opacity: .75; }
+  /* Font locali, licenza SIL OFL 1.1 (vedi fonts/OFL-*.txt) */
+  @font-face {
+    font-family: "Bebas Neue";
+    src: url("fonts/bebas-neue-latin-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "Fraunces";
+    src: url("fonts/fraunces-latin-wght.woff2") format("woff2");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* Palette: blu e crema. Contrasti su blu: crema 13:1, crema attenuato 8,7:1 */
+  :root {
+    --blu: #12223a;
+    --crema: #f2e8d0;
+    --crema-2: #c9bfa8;
+    --filetto: rgba(242, 232, 208, .32);
+    --titoli: "Bebas Neue", "Arial Narrow", Impact, sans-serif;
+    --testo: "Fraunces", Georgia, "Times New Roman", serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html {
+    background: var(--blu);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    padding: 3rem 1.25rem 4rem;
+    background: var(--blu);
+    color: var(--crema);
+    font-family: var(--testo);
+    font-size: 1.125rem;
+    line-height: 1.6;
+    font-variation-settings: "opsz" 14;
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Grana: rumore SVG inline, fisso sopra la pagina, non intercetta i clic */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    opacity: .13;
+    mix-blend-mode: soft-light;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  }
+
+  main {
+    max-width: 34rem;
+    margin: 0 auto;
+  }
+
+  p { margin: 0 0 1rem; text-wrap: pretty; }
+
+  /* Link: sempre sottolineati, sottolineatura più spessa al passaggio */
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: .2em;
+    overflow-wrap: anywhere;
+  }
+  a:hover { text-decoration-thickness: 3px; }
+  a:focus-visible,
+  summary:focus-visible {
+    outline: 3px solid var(--crema);
+    outline-offset: 4px;
+    border-radius: 1px;
+  }
+
+  /* Testata: doppio filetto, nome, sottotitolo */
+  .testata {
+    border-top: 6px solid var(--crema);
+    padding-top: 3px;
+    margin-bottom: 2.5rem;
+  }
+  .testata::before {
+    content: "";
+    display: block;
+    border-top: 1px solid var(--crema);
+    margin-bottom: 1.25rem;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--titoli);
+    font-weight: 400;
+    text-transform: uppercase;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: clamp(4.25rem, 21vw, 7.5rem);
+    line-height: .86;
+    letter-spacing: .01em;
+    margin-left: -.03em;
+  }
+
+  .sottotitolo {
+    font-family: var(--titoli);
+    font-size: 1.15rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    margin: .9rem 0 0;
+    padding-top: .6rem;
+    border-top: 1px solid var(--crema);
+  }
+
+  .manifesto {
+    font-size: 1.4rem;
+    line-height: 1.42;
+    font-variation-settings: "opsz" 48;
+    font-weight: 380;
+    margin: 0 0 1rem;
+  }
+
+  /* Sezioni: filetto pieno sopra il titolo */
+  section { margin-top: 3.5rem; }
+
+  h2 {
+    font-size: 2.1rem;
+    line-height: 1;
+    letter-spacing: .03em;
+    padding-top: .7rem;
+    border-top: 2px solid var(--crema);
+    margin-bottom: 1.25rem;
+  }
+
+  .domanda {
+    font-weight: 600;
+  }
+
+  .indirizzo {
+    font-family: var(--titoli);
+    font-size: 1.2rem;
+    letter-spacing: .08em;
+    line-height: 1.3;
+    text-transform: uppercase;
+    display: inline-block;
+    border: 1px solid var(--crema);
+    padding: .55rem .8rem .45rem;
+    margin-top: .75rem;
+  }
+
+  /* Progetti espandibili */
+  .progetti { border-bottom: 1px solid var(--filetto); }
+
+  details { border-top: 1px solid var(--filetto); }
+
+  summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 3.5rem;
+    padding: .6rem 0 .5rem;
+    cursor: pointer;
+    list-style: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::marker { content: ""; }
+
+  summary h3 {
+    font-size: 1.75rem;
+    line-height: 1.05;
+    letter-spacing: .03em;
+  }
+
+  /* Segno + / -, disegnato con due barre */
+  summary::after {
+    content: "";
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    background:
+      linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat,
+      linear-gradient(currentColor, currentColor) center / 2px 100% no-repeat;
+    transition: transform .2s ease;
+  }
+  details[open] > summary::after {
+    background:
+      linear-gradient(currentColor, currentColor) center / 100% 2px no-repeat;
+    transform: rotate(180deg);
+  }
+
+  summary:hover h3 { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .12em; }
+
+  .voce {
+    padding: .1rem 0 1.25rem;
+  }
+  .voce p:last-child { margin-bottom: 0; }
+
+  /* Apertura animata dove il browser lo supporta, altrimenti immediata */
+  @supports (interpolate-size: allow-keywords) {
+    :root { interpolate-size: allow-keywords; }
+    details::details-content {
+      block-size: 0;
+      overflow: hidden;
+      transition: block-size .25s ease, content-visibility .25s allow-discrete;
+    }
+    details[open]::details-content { block-size: auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    summary::after,
+    details::details-content { transition: none; }
+  }
+
+  .contatti p { line-height: 1.75; }
+
+  /* Footer: chiuso da un doppio filetto speculare alla testata */
+  footer {
+    margin-top: 4rem;
+    border-bottom: 6px solid var(--crema);
+    padding-bottom: 3px;
+    font-size: .9rem;
+    line-height: 1.6;
+    color: var(--crema-2);
+  }
+  footer::before {
+    content: "";
+    display: block;
+    border-top: 1px solid var(--crema);
+    margin-bottom: 1rem;
+  }
+  footer p {
+    border-bottom: 1px solid var(--crema);
+    padding-bottom: 1.25rem;
+    margin: 0;
+  }
+
+  @media (min-width: 48em) {
+    body { padding-top: 5rem; font-size: 1.1875rem; }
+    .manifesto { font-size: 1.55rem; }
+    section { margin-top: 4.5rem; }
+    h2 { font-size: 2.4rem; }
+    summary h3 { font-size: 2rem; }
+  }
+
+  /* Stampa: nero su bianco, senza grana */
+  @media print {
+    html, body { background: #fff; color: #000; }
+    body { padding: 0; }
+    body::before { display: none; }
+    .testata, .testata::before, .sottotitolo, h2, .indirizzo, footer, footer::before, footer p { border-color: #000; }
+    summary::after { display: none; }
+  }
 </style>
 </head>
 <body>
 <main>
 
+<header class="testata">
 <h1>La Situazione</h1>
-<p>Associazione culturale di Torino.</p>
+<p class="sottotitolo">Associazione culturale di Torino.</p>
+</header>
 
-<p>Contro la cultura come bene di consumo. Contro l'intrattenimento e l'instupidimento sociale. A favore dell'aggregazione, dell'incontro, della partecipazione e della creazione collettiva. La Situazione.</p>
+<p class="manifesto">Contro la cultura come bene di consumo. Contro l'intrattenimento e l'instupidimento sociale. A favore dell'aggregazione, dell'incontro, della partecipazione e della creazione collettiva. La Situazione.</p>
 
+<section>
 <h2>Lo Sbando - Centro Situazionale</h2>
-<p>Cos’è un Centro Situazionale?</p>
+<p class="domanda">Cos’è un Centro Situazionale?</p>
 <p>Innanzitutto è un luogo fisico, in cui le persone possono andare e nel quale possono incontrarsi. Da qui, “Centro”.</p>
 <p>Poi è un luogo in cui, per il fatto stesso che due o più persone ci si incontrano, accadono cose. Si riattivano energie sociali, si ritrovano partecipazione e senso di appartenenza, si coltiva meraviglia. Il tutto non come consumatori e consumatrici - anzi, proprio in contrasto con una logica di socialità e di cultura come beni di consumo - ma come partecipanti, promotori, collaboratori. Da qui, “Situazionale”.</p>
-<p>Piazza Innocenzo Vigliardi Paravia 9/B, 10144 Torino</p>
+<p class="indirizzo">Piazza Innocenzo Vigliardi Paravia 9/B, 10144 Torino</p>
+</section>
 
+<section>
 <h2>Progetti attivi</h2>
 
-<h3>Piante d'Asporto</h3>
+<div class="progetti">
+<details>
+<summary><h3>Piante d'Asporto</h3></summary>
+<div class="voce">
 <p>L'evento di scambio per chi ha tante piante, forse troppe, sicuramente doppie.</p>
 <p><a href="https://www.piantedasporto.it">www.piantedasporto.it</a> · IG <a href="https://www.instagram.com/piantedasporto/">@piantedasporto</a></p>
+</div>
+</details>
 
-<h3>Tutt* Bocciat*</h3>
+<details>
+<summary><h3>Tutt* Bocciat*</h3></summary>
+<div class="voce">
 <p>L'evento per ignorant* delle bocce che unisce giovani e diversamente giovani.</p>
 <p>IG <a href="https://www.instagram.com/tutt_bocciat_/">@tutt_bocciat_</a></p>
+</div>
+</details>
 
-<h3>Prove Aperte</h3>
+<details>
+<summary><h3>Prove Aperte</h3></summary>
+<div class="voce">
 <p>Un varietà che non ce l'ha fatta. Spazio aperto a performer che vogliono mettersi alla prova.</p>
+</div>
+</details>
 
-<h3>La Notte della Sbatta</h3>
+<details>
+<summary><h3>La Notte della Sbatta</h3></summary>
+<div class="voce">
 <p>Insieme contro le forze degli arretrati. E del male. Admin night e talk per capirci qualcosa di tasse e finanze.</p>
+</div>
+</details>
+</div>
+</section>
 
+<section class="contatti">
 <h2>Contatti</h2>
 <p>Lo Sbando: <a href="https://share.google/iNlkYcX3iZ38SpJQl">Piazza Innocenzo Vigliardi Paravia 9/B, 10144 Torino</a><br>
 Email: <a href="mailto:associazionelasituazione@proton.me">associazionelasituazione@proton.me</a><br>
 Instagram: <a href="https://www.instagram.com/lo_sbando/">@lo_sbando</a></p>
+</section>
 
 <footer>
 <p>La Situazione<br>Sede: Piazza Innocenzo Vigliardi Paravia 9/B, 10144 Torino<br>C.F. 97928700018</p>
